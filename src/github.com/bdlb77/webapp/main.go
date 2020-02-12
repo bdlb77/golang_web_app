@@ -6,6 +6,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	"golang_web_app/src/github.com/bdlb77/webapp/viewmodel"
 )
 
 func main() {
@@ -13,8 +15,16 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		requestedFile := r.URL.Path[1:]
 		template := templates[requestedFile+".html"]
+		// create interface to take ANY data value!
+		var context interface{}
+		switch requestedFile {
+		case "shop":
+			context = viewmodel.NewShop()
+		default:
+			context = viewmodel.NewBase()
+		}
 		if template != nil {
-			err := template.Execute(w, nil)
+			err := template.Execute(w, context)
 			if err != nil {
 				log.Println(err)
 			}
