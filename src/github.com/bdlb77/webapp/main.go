@@ -3,37 +3,18 @@ package main
 import (
 	"html/template"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 
-	"golang_web_app/src/github.com/bdlb77/webapp/viewmodel"
+	"golang_web_app/src/github.com/bdlb77/webapp/controller"
 )
 
 func main() {
+	// populating templates (view parsing and finding)
 	templates := populateTemplates()
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		requestedFile := r.URL.Path[1:]
-		template := templates[requestedFile+".html"]
-		// create interface to take ANY data value!
-		var context interface{}
-		switch requestedFile {
-		case "shop":
-			context = viewmodel.NewShop()
-		default:
-			context = viewmodel.NewBase()
-		}
-		if template != nil {
-			err := template.Execute(w, context)
-			if err != nil {
-				log.Println(err)
-			}
-		} else {
-			w.WriteHeader(404)
-		}
-	})
-	http.Handle("/img/", http.FileServer(http.Dir("public")))
-	http.Handle("/css/", http.FileServer(http.Dir("public")))
+	// handles controller layer
+	controller.StartUp(templates)
+	// serve port
 	http.ListenAndServe(":8000", nil)
 }
 

@@ -7,10 +7,11 @@ type Shop struct {
 }
 
 type Category struct {
-	URL         string
-	ImageURL    string
-	Title       string
-	Description string
+	URL           string
+	ImageURL      string
+	Title         string
+	Description   string
+	IsOrientRight bool
 }
 
 func NewShop() Shop {
@@ -19,9 +20,10 @@ func NewShop() Shop {
 		Active: "shop",
 	}
 	juiceCategory := Category{
-		URL:      "/shop_details",
-		ImageURL: "lemon.png",
-		Title:    "Juices and Mixes",
+		URL:           "/shop_details",
+		ImageURL:      "lemon.png",
+		Title:         "Juices and Mixes",
+		IsOrientRight: false,
 		Description: `Explore our wide assortment of juices and mixes expected by
 								today's lemonade stand clientelle. Now featuring a full line of
 								organic juices that are guaranteed to be obtained from trees that
@@ -29,17 +31,19 @@ func NewShop() Shop {
 								fertilizers.`,
 	}
 	supplyCategory := Category{
-		URL:      ".",
-		ImageURL: "kiwi.png",
-		Title:    "Cups, Straws, and Other Supplies",
+		URL:           ".",
+		ImageURL:      "kiwi.png",
+		IsOrientRight: true,
+		Title:         "Cups, Straws, and Other Supplies",
 		Description: `From paper cups to bio-degradable plastic to straws and
 							napkins, LSS is your source for the sundries that keep your stand
 							running smoothly.`,
 	}
 	advertiseCategory := Category{
-		URL:      ".",
-		ImageURL: "pineapple.png",
-		Title:    "Signs and Advertising",
+		URL:           ".",
+		ImageURL:      "pineapple.png",
+		Title:         "Signs and Advertising",
+		IsOrientRight: false,
 		Description: `Sure, you could just wait for people to find your stand
 							along the side of the road, but if you want to take it to the next
 							level, our premium line of advertising supplies.`,
