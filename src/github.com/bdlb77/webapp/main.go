@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"golang_web_app/src/github.com/bdlb77/webapp/controller"
+	"golang_web_app/src/github.com/bdlb77/webapp/middleware"
 )
 
 func main() {
@@ -15,7 +16,7 @@ func main() {
 	// handles controller layer
 	controller.StartUp(templates)
 	// serve port
-	http.ListenAndServe(":8000", nil)
+	http.ListenAndServe(":8000", &middleware.TimeoutMiddleware{new(middleware.GzipMiddleware)})
 }
 
 func populateTemplates() map[string]*template.Template {
