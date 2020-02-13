@@ -37,6 +37,7 @@ func (gm *GzipMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		ResponseWriter: w,
 		Writer:         gzipWriter,
 	}
+	w.Header().Add("Content-Type", "text/html")
 	// Next with new writer and pass Request
 	gm.Next.ServeHTTP(grw, r)
 

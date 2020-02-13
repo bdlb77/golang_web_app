@@ -1,13 +1,18 @@
 package main
 
 import (
+	"database/sql"
+	"fmt"
 	"html/template"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 
+	_ "github.com/lib/pq" // driver for Postgres
 	"golang_web_app/src/github.com/bdlb77/webapp/controller"
 	"golang_web_app/src/github.com/bdlb77/webapp/middleware"
+	"golang_web_app/src/github.com/bdlb77/webapp/model"
 )
 
 func main() {
@@ -15,8 +20,21 @@ func main() {
 	templates := populateTemplates()
 	// handles controller layer
 	controller.StartUp(templates)
+	// connect to DB
+	db := connectToDB()
+	// gracefully close DB when app shuts down
+	defer db.Close()
 	// serve port
 	http.ListenAndServe(":8000", &middleware.TimeoutMiddleware{new(middleware.GzipMiddleware)})
+}
+
+func connectToDB() *sql.DB {
+	db, err := sql.Open("postgres", "postgres://bryanleighton:@localhost/golang_db?sslmode?=disable")
+	if err != nil {
+		log.Fatalln(fmt.Errorf("Could not connect to DB: %v", err))
+	}
+	model.SetDatabase(db)
+	return db
 }
 
 func populateTemplates() map[string]*template.Template {
