@@ -29,7 +29,7 @@ func main() {
 }
 
 func connectToDB() *sql.DB {
-	db, err := sql.Open("postgres", "postgres://bryanleighton:@localhost/golang_db?sslmode?=disable")
+	db, err := sql.Open("postgres", "postgres://bryanleighton:@localhost/golang_db?sslmode=disable")
 	if err != nil {
 		log.Fatalln(fmt.Errorf("Could not connect to DB: %v", err))
 	}

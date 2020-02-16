@@ -14,6 +14,7 @@ var (
 func StartUp(templates map[string]*template.Template) {
 	homeController.homeTemplate = templates["home.html"]
 	homeController.loginTemplate = templates["login.html"]
+	homeController.signUpTemplate = templates["sign_up.html"]
 	standLocatorController.standLocatorTemplate = templates["stand_locator.html"]
 	shopController.categoryTemplate = templates["shop_details.html"]
 	shopController.shopTemplate = templates["shop.html"]
