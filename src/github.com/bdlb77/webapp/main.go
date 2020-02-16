@@ -9,11 +9,20 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq" // driver for Postgres
 	"golang_web_app/src/github.com/bdlb77/webapp/controller"
 	"golang_web_app/src/github.com/bdlb77/webapp/middleware"
 	"golang_web_app/src/github.com/bdlb77/webapp/model"
 )
+
+// init is invoked before main()
+func init() {
+	// loads values from .env into the system
+	if err := godotenv.Load(); err != nil {
+		log.Print("No .env file found")
+	}
+}
 
 func main() {
 	// populating templates (view parsing and finding)
@@ -68,4 +77,13 @@ func populateTemplates() map[string]*template.Template {
 		result[fi.Name()] = tmpl
 	}
 	return result
+}
+
+// Simple helper function to read an environment or return a default value
+func getEnv(key string, defaultVal string) string {
+	if value, exists := os.LookupEnv(key); exists {
+		return value
+	}
+
+	return defaultVal
 }
