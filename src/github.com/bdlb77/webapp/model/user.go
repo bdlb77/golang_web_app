@@ -11,11 +11,11 @@ import (
 const passwordSalt = "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
 
 type User struct {
-	ID        int        `json:"id"`
-	Email     string     `json:"email"`
-	FirstName string     `json:"first_name"`
-	LastName  string     `json:"last_name"`
-	LastLogin *time.Time `json:"last_login"`
+	ID        int
+	Email     string
+	FirstName string
+	LastName  string
+	LastLogin *time.Time
 }
 
 func Login(email, password string) (*User, error) {
@@ -28,7 +28,7 @@ func Login(email, password string) (*User, error) {
 	pwd := base64.URLEncoding.EncodeToString(hasher.Sum(nil))
 
 	row := db.QueryRow(`
-		SELECT id, email, first_name, last_name FROM public.user
+		SELECT id, email, first_name, last_name FROM users
 		WHERE email = $1 AND password = $2
 	`, email, pwd)
 	err := row.Scan(&result.ID, &result.Email, &result.FirstName, &result.LastName)
@@ -43,7 +43,7 @@ func Login(email, password string) (*User, error) {
 	t := time.Now()
 
 	_, err = db.Exec(`
-		UPDATE public.user
+		UPDATE users
 		SET last_login = $1
 		WHERE id = $2
 	`, t, result.ID)
